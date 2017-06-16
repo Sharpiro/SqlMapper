@@ -1,5 +1,7 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using Scaffolding;
 using SourceBuilding;
 using SqlMapper.Core;
@@ -24,7 +26,13 @@ namespace SqlMapper
             var dbName = databases.Single(dn => dn.Equals("zlutilities", StringComparison.InvariantCultureIgnoreCase));
             var dbConnString = string.Format(baseConnString, dbName);
             var scaffoldingDto = scaffolder.ScaffoldDatabase(dbConnString, outDir, rootNamespace, contextName);
+            var allSourceText = string.Join("", scaffoldingDto.AllFiles);
             sourceBuilder.Build(scaffoldingDto.AllFiles);
+
+            var fileAssemblyBytes = File.ReadAllBytes(@"C:\Users\U403598\Desktop\temp\ef_out\test.dll");
+            var newAssembly = Assembly.Load(fileAssemblyBytes);
+            var types = newAssembly.GetTypes();
+
         }
     }
 }

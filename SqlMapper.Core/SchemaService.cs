@@ -31,16 +31,20 @@ namespace SqlMapper.Core
             var dbNames = new List<string>();
             const string sqlCommand = "SELECT name from sys.databases WHERE owner_sid != 1";
             using (var conn = new SqlConnection(_connectionString))
-            using (var command = new SqlCommand(sqlCommand, conn))
-            using (var dataReader = command.ExecuteReader())
             {
-                while (dataReader.Read())
+                conn.Open();
+                using (var command = new SqlCommand(sqlCommand, conn))
+                using (var dataReader = command.ExecuteReader())
                 {
-                    if (dataReader.FieldCount != 1) throw new IndexOutOfRangeException($"Expected 1 fields, but was actually {dataReader.FieldCount}");
-                    if (!(dataReader[0] is string dbName)) throw new InvalidDataException("Unable to convert db name to string");
-                    dbNames.Add(dbName);
+                    while (dataReader.Read())
+                    {
+                        if (dataReader.FieldCount != 1) throw new IndexOutOfRangeException($"Expected 1 fields, but was actually {dataReader.FieldCount}");
+                        if (!(dataReader[0] is string dbName)) throw new InvalidDataException("Unable to convert db name to string");
+                        dbNames.Add(dbName);
+                    }
                 }
             }
+
             return dbNames.ToImmutableList();
         }
 

@@ -58,6 +58,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Scaffolder\Scaffolding.csproj">
+      <Project>{C27D7C72-5051-437A-8F2E-5959972443E3}</Project>
+      <Name>Scaffolding</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SqlMapper.Core\SqlMapper.Core.csproj">
       <Project>{4b77ba8f-38cb-4bdf-ad07-679a243b180b}</Project>
       <Name>SqlMapper.Core</Name>

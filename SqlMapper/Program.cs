@@ -8,7 +8,7 @@ namespace SqlMapper
     {
         internal static void Main(string[] args)
         {
-            const string connectionString = "Server=(localdb)\\MSSQLLocalDB;Database=Health;Trusted_Connection=True;MultipleActiveResultSets=true";
+            const string connectionString = "Server=localhost;Database=ZLUtilities;Trusted_Connection=True;";
             var service = new SchemaService(connectionString);
             var databases = service.GetDatabasesNames();
             var dbName = databases.Single(dn => dn.Equals("health", StringComparison.InvariantCultureIgnoreCase));

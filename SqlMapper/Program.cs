@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using Scaffolding;
+using SourceBuilding;
 using SqlMapper.Core;
 
 namespace SqlMapper
@@ -17,11 +18,13 @@ namespace SqlMapper
             var masterConnString = string.Format(baseConnString, "master");
             var schemaService = new SchemaService(masterConnString);
             var scaffolder = new Scaffolder();
+            var sourceBuilder = new SourceBuilder();
+
             var databases = schemaService.GetDatabasesNames();
             var dbName = databases.Single(dn => dn.Equals("zlutilities", StringComparison.InvariantCultureIgnoreCase));
             var dbConnString = string.Format(baseConnString, dbName);
             var scaffoldingDto = scaffolder.ScaffoldDatabase(dbConnString, outDir, rootNamespace, contextName);
-            var joined = string.Join(Environment.NewLine, scaffoldingDto.ModelSources);
+            sourceBuilder.Build(scaffoldingDto.AllFiles);
         }
     }
 }

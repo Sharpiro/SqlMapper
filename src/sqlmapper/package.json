@@ -30,6 +30,7 @@
   },
   "devDependencies": {
     "@types/mocha": "^2.2.32",
+    "@types/mssql": "^4.0.2",
     "@types/node": "^6.0.40",
     "mocha": "^2.3.3",
     "node-fetch": "^1.7.1",
@@ -38,10 +39,9 @@
   },
   "dependencies": {
     "@types/node-fetch": "^1.6.7",
-    "http": "0.0.0",
     "http-proxy-agent": "^1.0.0",
-    "https": "^1.0.0",
     "https-proxy-agent": "^1.0.0",
+    "mssql": "^4.0.4",
     "url": "^0.11.0"
   }
 }

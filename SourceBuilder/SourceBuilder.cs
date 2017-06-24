@@ -51,13 +51,13 @@ namespace SourceBuilding
                 //using (var stream = new MemoryStream())
                 //{
                 //    var formatter = new BinaryFormatter();
-                
+
                 //    formatter.Serialize(stream, newAssembly);
 
                 //    dllAsArray = stream.ToArray();
                 //}
                 //var types = newAssembly.GetTypes();
-                //File.WriteAllBytes(@"C:\Users\U403598\Desktop\temp\ef_out\test.dll", assemblyBytes);
+                File.WriteAllBytes("C:\\temp\\gen.dll", assemblyBytes);
                 //var context = Activator.CreateInstance(types.Single(t => t.Name.Equals("generatedContext",
                 //        StringComparison.InvariantCultureIgnoreCase)));
             }

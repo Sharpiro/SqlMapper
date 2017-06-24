@@ -11,9 +11,12 @@ suite("SqlService Tests", () => {
 
     // Defines a Mocha unit test
     test("SqlServiceTest1", () => {
-        var service = new SqlService();
-        service.get();
-        
+        const driver = 'msnodesqlv8';
+        const server = '(localdb)';
+        const instance = "mssqllocaldb";
+        const database = 'Test';
+        var sqlService = new SqlService(server, database, instance, driver);
+        sqlService.getSql(null);
     });
 
 });

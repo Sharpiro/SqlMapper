@@ -106,7 +106,6 @@ namespace SqlMapper.Core
                 }
                 return database.AddTables(table);
             }
-            throw new NotImplementedException();
         }
     }
 }

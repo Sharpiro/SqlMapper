@@ -62,6 +62,10 @@
       <Project>{C27D7C72-5051-437A-8F2E-5959972443E3}</Project>
       <Name>Scaffolding</Name>
     </ProjectReference>
+    <ProjectReference Include="..\SourceBuilder\SourceBuilding.csproj">
+      <Project>{4FAF7AFE-41A2-4CB5-AEAF-4E6F39B95196}</Project>
+      <Name>SourceBuilding</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SqlMapper.Core\SqlMapper.Core.csproj">
       <Project>{4b77ba8f-38cb-4bdf-ad07-679a243b180b}</Project>
       <Name>SqlMapper.Core</Name>

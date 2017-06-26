@@ -13,7 +13,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SourceBuilding", "SourceBui
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SqlMapper.Host", "SqlMapper.Host\SqlMapper.Host.csproj", "{5B4F204A-E1A6-4DC1-AA8A-0A252B5E0F71}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Scaffolding.Core", "Scaffolding.Core\Scaffolding.Core.csproj", "{6D89DB31-CE65-42F6-9AF0-78A4B4E836EE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Scaffolding.Core", "Scaffolding.Core\Scaffolding.Core.csproj", "{6D89DB31-CE65-42F6-9AF0-78A4B4E836EE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SourceBuilding.Core", "SourceBuilding.Core\SourceBuilding.Core.csproj", "{579CA6AD-3213-4186-B844-81490161D0E5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +47,10 @@ Global
 		{6D89DB31-CE65-42F6-9AF0-78A4B4E836EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6D89DB31-CE65-42F6-9AF0-78A4B4E836EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6D89DB31-CE65-42F6-9AF0-78A4B4E836EE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{579CA6AD-3213-4186-B844-81490161D0E5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{579CA6AD-3213-4186-B844-81490161D0E5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{579CA6AD-3213-4186-B844-81490161D0E5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{579CA6AD-3213-4186-B844-81490161D0E5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

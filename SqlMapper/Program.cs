@@ -20,7 +20,7 @@ namespace SqlMapper
             var sourceBuilder = new SourceBuilder();
 
             var databases = schemaService.GetDatabasesNames();
-            var dbName = databases.Single(dn => dn.Equals("Test", StringComparison.InvariantCultureIgnoreCase));
+            var dbName = databases.Single(dn => dn.Equals("Temp", StringComparison.InvariantCultureIgnoreCase));
             var contextName = $"{dbName}Context";
             var dbConnString = string.Format(baseConnString, dbName);
             var scaffoldingDto = scaffolder.ScaffoldDatabase(dbConnString, rootNamespace, contextName);

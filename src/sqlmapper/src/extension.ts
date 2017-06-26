@@ -1,10 +1,5 @@
 'use strict';
 import * as vscode from 'vscode';
-import * as https from 'https';
-import * as http from 'http';
-import HttpsProxyAgent = require('https-proxy-agent');
-import HttpProxyAgent = require('http-proxy-agent');
-import { parse as parseUrl } from 'url';
 import { MainController } from "./controllers/main-controller";
 
 let controller: MainController;
@@ -24,6 +19,8 @@ export function activate(context: vscode.ExtensionContext) {
     let disposable = vscode.commands.registerCommand('extension.order66', async () => {
 
 
+        if (!controller)
+            controller = MainController.create();
 
         controller.executeOrder66();
 
@@ -32,7 +29,7 @@ export function activate(context: vscode.ExtensionContext) {
         //     console.log(`you picked ${v}`);
         // });
 
-  
+
 
         //open document
         // var document = await vscode.workspace.openTextDocument(csxFilePath)

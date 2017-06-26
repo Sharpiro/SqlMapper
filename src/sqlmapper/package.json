@@ -33,12 +33,10 @@
     "@types/mssql": "^4.0.2",
     "@types/node": "^6.0.40",
     "mocha": "^2.3.3",
-    "node-fetch": "^1.7.1",
     "typescript": "^2.0.3",
     "vscode": "^1.0.0"
   },
   "dependencies": {
-    "@types/node-fetch": "^1.6.7",
     "http-proxy-agent": "^1.0.0",
     "https-proxy-agent": "^1.0.0",
     "msnodesqlv8": "^0.2.17",

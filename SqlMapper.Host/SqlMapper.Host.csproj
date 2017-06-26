@@ -15,6 +15,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Scaffolding.Core\Scaffolding.Core.csproj" />
+    <ProjectReference Include="..\SourceBuilding.Core\SourceBuilding.Core.csproj" />
   </ItemGroup>
 
 </Project>

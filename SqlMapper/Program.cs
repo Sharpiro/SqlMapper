@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using Scaffolding;
 using SourceBuilding;
 using SqlMapper.Core;

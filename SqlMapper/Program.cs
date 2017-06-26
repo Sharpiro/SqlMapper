@@ -13,7 +13,6 @@ namespace SqlMapper
         {
             //const string baseConnString = "Server=localhost;Database={0};Trusted_Connection=True;";
             const string baseConnString = @"Server=(localdb)\mssqllocaldb;Database={0};Trusted_Connection=True;";
-            const string outDir = @"C:\Users\U403598\Desktop\temp\ef_out";
             const string rootNamespace = "GeneratedNamespace";
             var masterConnString = string.Format(baseConnString, "master");
             var schemaService = new SchemaService(masterConnString);
@@ -24,7 +23,7 @@ namespace SqlMapper
             var dbName = databases.Single(dn => dn.Equals("Test", StringComparison.InvariantCultureIgnoreCase));
             var contextName = $"{dbName}Context";
             var dbConnString = string.Format(baseConnString, dbName);
-            var scaffoldingDto = scaffolder.ScaffoldDatabase(dbConnString, outDir, rootNamespace, contextName);
+            var scaffoldingDto = scaffolder.ScaffoldDatabase(dbConnString, rootNamespace, contextName);
             var allSourceText = string.Join("", scaffoldingDto.AllFiles);
             var scaffoldedAssemblyBytes = sourceBuilder.Build(scaffoldingDto.AllFiles);
 

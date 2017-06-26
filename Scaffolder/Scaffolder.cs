@@ -12,8 +12,7 @@ namespace Scaffolding
 {
     public class Scaffolder
     {
-        public ScaffoldingDto ScaffoldDatabase(string connectionString, string outDir, string rootNamespace,
-            string contextName)
+        public ScaffoldingDto ScaffoldDatabase(string connectionString, string rootNamespace, string contextName)
         {
             var scaffUtils = new ScaffoldingUtilities();
             var csharpUtils = new CSharpUtilities();

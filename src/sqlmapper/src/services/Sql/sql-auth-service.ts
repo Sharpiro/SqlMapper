@@ -1,17 +1,19 @@
 import { ConnectionPool } from "mssql";
 import { ISqlService } from "./I-sql-service";
-const mssql = require('mssql/msnodesqlv8')
+const mssql = require('mssql')
 
-export class SqlService implements ISqlService {
+export class SqlAuthService implements ISqlService {
     constructor(
-        private server: string, private database: string,
-        private instance = "", private driver?: string) {
+        private server: string, private database: string, private username: string,
+        private password: string, private instance = "") {
     }
 
     public async getSql(sql: string): Promise<any[]> {
-        var config = {
-            driver: this.driver,
-            connectionString: `Driver={SQL Server Native Client 11.0};Server={${this.server}\\${this.instance}};Database={${this.database}};Trusted_Connection={yes};`,
+        const config = {
+            user: this.username,
+            password: this.password,
+            server: this.server,
+            database: this.database
         };
 
         let connectionPool: ConnectionPool;

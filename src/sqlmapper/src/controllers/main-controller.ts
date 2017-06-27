@@ -1,6 +1,7 @@
 import * as vscode from 'vscode';
-// import { SqlService } from "../services/Sql/sqlService";
-import { MemorySqlService as SqlService } from "../services/Sql/memory-sql-service";
+// import { TrustedSqlService } from "../services/Sql/trusted-sql-service";
+// import { MemorySqlService } from "../services/Sql/memory-sql-service";
+import { SqlAuthService } from "../services/Sql/sql-auth-service";
 import { FileService } from "../services/fileService";
 import { HttpService } from "../services/http-Service";
 import { ISqlService } from "../services/Sql/I-sql-service";
@@ -12,14 +13,13 @@ export class MainController {
         //get database list
         const getDatabasesQuery = "SELECT name from sys.databases WHERE owner_sid != 1";
         var databaseNames: string[] = (await this.sqlService.getSql(getDatabasesQuery)).map(i => i.name);
-        // const databaseNames = ["Temp", "Other"];
-        var connectionString = "server=(localdb)\\mssqllocaldb;database=Temp;Trusted_Connection=true"
 
         //user selection
         var pick = await vscode.window.showQuickPick(databaseNames);
 
         //make request to build assembly and return result data
-        const localUrl = `http://localhost:2000/api/test/get?connectionString=${connectionString}&databaseName=${databaseNames[0]}`;
+        var connectionString = `server=localhost;database=${pick};Trusted_Connection=true`
+        const localUrl = `http://localhost:2000/api/test/get?connectionString=${connectionString}&databaseName=${pick}`;
         var data = await this.httpService.get(localUrl);
         var jObject = JSON.parse(data);
 
@@ -32,19 +32,26 @@ export class MainController {
         await this.fileService.create(csxFilePath, csxFileData);
 
         //open document
+        await vscode.workspace.saveAll();
+        var closeFolderCommand = (await vscode.commands.getCommands()).filter(c => c.toLowerCase().includes("omni"));
+        // await vscode.commands.executeCommand(closeFolderCommand);
+        await vscode.commands.executeCommand('vscode.openFolder', vscode.Uri.parse("C:\\Users\\U403598\\AppData\\Local\\SqlMapper"));
+        // await vscode.commands.executeCommand(command, "C:\\Users\\U403598\\AppData\\Local\\SqlMapper");
         var document = await vscode.workspace.openTextDocument(csxFilePath)
         var textEditor = await vscode.window.showTextDocument(document);
     }
 
     public static create(): MainController {
         const driver = 'msnodesqlv8';
-        const server = '(localdb)';
-        const instance = "mssqllocaldb";
-        const database = 'Test';
+        const server = 'localhost';
+        // const instance = "mssqllocaldb";
+        const instance = "null";
+        const database = 'Temp';
         var proxyUrl = process.env.proxy;
         var httpService = new HttpService(proxyUrl);
         // var sqlService = new SqlService(server, database, instance, driver);
-        var sqlService = new SqlService(server, database, instance, driver);
+        // var sqlService = new MemorySqlService(server, database, instance, driver);
+        var sqlService = new SqlAuthService(server, database, "test", "test", instance);
         var fileService = new FileService();
         return new MainController(sqlService, fileService, httpService);
     }

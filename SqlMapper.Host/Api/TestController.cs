@@ -28,7 +28,8 @@ namespace SqlMapper.Host.Api
 
                 var scaffolding = scaffolder.ScaffoldDatabase(connectionString, @namespace, contextName);
                 var assemblyBytes = sourceBuilder.Build(scaffolding.AllFiles);
-                var script = scriptBuilder.Build(@namespace, contextName, assemblyPath);
+                var firstDbsetPropertyName = scriptBuilder.GetPropertyName(scaffolding.DbContextSource);
+                var script = scriptBuilder.Build(@namespace, contextName, assemblyPath, firstDbsetPropertyName);
 
                 File.WriteAllBytes(assemblyPath, assemblyBytes);
 

@@ -27,12 +27,12 @@ namespace Scaffolding.CustomScaffolding
 
             foreach (var entityConfig in modelConfiguration.EntityConfigurations)
             {
-                //var entityName = entityConfig.EntityType.Name;
-                //var setName = Inflector.Inflector.Pluralize(entityName) ?? entityName;
+                var entityName = entityConfig.EntityType.Name;
+                var setName = Inflector.Inflector.Pluralize(entityName) ?? entityName;
 
-                //code = code.Replace(
-                //    $"DbSet<{entityName}> {entityName}",
-                //    $"DbSet<{entityName}> {setName}");
+                code = code.Replace(
+                    $"DbSet<{entityName}> {entityName}",
+                    $"DbSet<{entityName}> {setName}");
             }
 
             return code;

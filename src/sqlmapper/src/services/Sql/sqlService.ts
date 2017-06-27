@@ -1,7 +1,8 @@
 import { ConnectionPool } from "mssql";
+import { ISqlService } from "./I-sql-service";
 const mssql = require('mssql/msnodesqlv8')
 
-export class SqlService {
+export class SqlService implements ISqlService {
     constructor(
         private server: string, private database: string,
         private instance = "", private driver?: string) {

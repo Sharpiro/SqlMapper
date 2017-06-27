@@ -8,28 +8,37 @@ namespace SqlMapper.Host.Api
 {
     public class TestController
     {
-        public async Task<string> Get(string connectionString, string databaseName)
+        public async Task<object> Get(string connectionString, string databaseName)
         {
+            await Task.Yield();
             try
             {
-                await Task.Yield();
                 var scaffolder = new Scaffolder();
-                var scaffolding = scaffolder.ScaffoldDatabase(connectionString, "GeneratedNamespace", $"{databaseName}Context");
                 var sourceBuilder = new SourceBuilder();
-                var assemblyBytes = sourceBuilder.Build(scaffolding.AllFiles);
+                var scriptBuilder = new ScriptBuilder();
+
+                const string @namespace = "GeneratedNamespace";
+                var contextName = $"{databaseName}Context";
 
                 var userFolder = Environment.GetEnvironmentVariable("LocalAppData");
                 var appFolder = $"{userFolder}\\SqlMapper";
-
                 var directory = new DirectoryInfo(appFolder);
                 if (!directory.Exists) directory.Create();
-                var outFilePath = $"{appFolder}\\generatedAssembly.dll";
+                var assemblyPath = $"{appFolder}\\generatedAssembly.dll";
 
-                File.WriteAllBytes(outFilePath, assemblyBytes);
+                var scaffolding = scaffolder.ScaffoldDatabase(connectionString, @namespace, contextName);
+                var assemblyBytes = sourceBuilder.Build(scaffolding.AllFiles);
+                var script = scriptBuilder.Build(@namespace, contextName, assemblyPath);
 
-                return outFilePath;
+                File.WriteAllBytes(assemblyPath, assemblyBytes);
+
+                var dto = new { Script = script };
+
+                return dto;
             }
+#pragma warning disable 168
             catch (Exception ex)
+#pragma warning restore 168
             {
                 throw;
             }

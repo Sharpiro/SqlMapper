@@ -28,32 +28,6 @@ export function activate(context: vscode.ExtensionContext) {
         // pick.then(v => {
         //     console.log(`you picked ${v}`);
         // });
-
-
-
-        //open document
-        // var document = await vscode.workspace.openTextDocument(csxFilePath)
-        // var textEditor = await vscode.window.showTextDocument(document);
-
-
-        //     const fullUrl = "https://raw.githubusercontent.com/seesharper/Dotnet.Script.NuGetMetadataResolver/master/build/project.json";
-        //     const proxyUrl = "http://proxy.wellsfargo.com:8080";
-
-        //     var agent = new HttpsProxyAgent(proxyUrl);
-
-        //     var parsedUrl: any = parseUrl(fullUrl);
-        //     var requestOptions: https.RequestOptions = {
-        //         host: parsedUrl.host,
-        //         path: parsedUrl.path,
-        //         agent: agent,
-        //         rejectUnauthorized: false
-        //     };
-
-        //     console.log("initiating call");
-        //     https.get(requestOptions, response => {
-        //         console.log("response received");
-        //         response.pipe(process.stdout);
-        //     });
     });
 
     context.subscriptions.push(disposable);

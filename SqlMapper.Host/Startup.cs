@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using SqlMapper.Host.Middleware;
+using SqlMapper.Host.Logging;
 
 namespace SqlMapper.Host
 {
@@ -14,6 +16,7 @@ namespace SqlMapper.Host
 
         public void Configure(IApplicationBuilder app, IServiceProvider serviceProvider, ILoggerFactory loggerFactory)
         {
+            app.UseMiddleware<RequestLoggingMiddleware>();
             app.UseMvc(options => options.MapRoute("Api", "Api/{controller}/{action}"));
         }
     }

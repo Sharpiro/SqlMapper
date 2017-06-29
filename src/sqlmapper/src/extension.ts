@@ -16,21 +16,15 @@ export function activate(context: vscode.ExtensionContext) {
     // The command has been defined in the package.json file
     // Now provide the implementation of the command with  registerCommand
     // The commandId parameter must match the command field in package.json
-    let disposable = vscode.commands.registerCommand('extension.order66', async () => {
-
-
-        if (!controller)
-            controller = MainController.create();
-
+    let order66Disposable = vscode.commands.registerCommand('extension.order66', async () => {
         controller.executeOrder66();
-
-        // var pick = vscode.window.showQuickPick(array);
-        // pick.then(v => {
-        //     console.log(`you picked ${v}`);
-        // });
     });
 
-    context.subscriptions.push(disposable);
+    let getInfoDisposable = vscode.commands.registerCommand('extension.getInfo', async () => {
+        controller.getInfo();
+    });
+
+    context.subscriptions.push(order66Disposable);
 }
 
 // this method is called when your extension is deactivated

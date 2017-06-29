@@ -8,7 +8,7 @@ namespace SourceBuilding.Core
 {
     public class ScriptBuilder
     {
-        public object Build(string @namespace, string contextName, string outFilePath, string propertyName)
+        public string Build(string @namespace, string contextName, string outFilePath, string propertyName)
         {
             var tree = CompilationUnit()
                 .WithUsings(
@@ -73,7 +73,24 @@ namespace SourceBuilding.Core
                                                                         Argument(
                                                                             LiteralExpression(
                                                                                 SyntaxKind.NumericLiteralExpression,
-                                                                                Literal(1)))))))))))}))
+                                                                                Literal(1))))))))))),
+                            FieldDeclaration(
+                                        VariableDeclaration(
+                                            IdentifierName("var"))
+                                        .WithVariables(
+                                            SingletonSeparatedList(
+                                                VariableDeclarator(
+                                                    Identifier("list"))
+                                                .WithInitializer(
+                                                    EqualsValueClause(
+                                                        InvocationExpression(
+                                                            MemberAccessExpression(
+                                                                SyntaxKind.SimpleMemberAccessExpression,
+                                                                IdentifierName("query"),
+                                                                IdentifierName("ToList"))))))))
+
+
+                        }))
                 .NormalizeWhitespace();
 
 

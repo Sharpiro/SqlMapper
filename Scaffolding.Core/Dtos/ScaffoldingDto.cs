@@ -7,6 +7,7 @@ namespace Scaffolding.Dtos
     {
         public string DbContextSource { get; set; }
         public IReadOnlyList<string> ModelSources { get; set; } = new List<string>();
-        public IReadOnlyList<string> AllFiles => ModelSources.ToImmutableList().Add(DbContextSource);
+        public List<string> AdditionalFiles { get; } = new List<string>();
+        public IReadOnlyList<string> AllFiles => ModelSources.ToImmutableList().Add(DbContextSource).AddRange(AdditionalFiles);
     }
 }

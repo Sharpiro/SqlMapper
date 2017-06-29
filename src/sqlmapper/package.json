@@ -11,7 +11,8 @@
     "Other"
   ],
   "activationEvents": [
-    "onCommand:extension.order66"
+    "onCommand:extension.order66",
+    "onCommand:extension.getInfo"
   ],
   "main": "./out/src/extension",
   "contributes": {
@@ -19,6 +20,10 @@
       {
         "command": "extension.order66",
         "title": "Execute Order 66"
+      },
+      {
+        "command": "extension.getInfo",
+        "title": "GetInfoSqlMapper"
       }
     ]
   },

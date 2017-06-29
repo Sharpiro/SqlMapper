@@ -1,8 +1,10 @@
 import { ISqlService } from "./I-sql-service";
 
 export class MemorySqlService implements ISqlService {
-        constructor(
-        private server: string, private database: string,
+    connectionString: string;
+    
+    constructor(
+        private server: string, public database: string,
         private instance = "", private driver?: string) {
     }
     

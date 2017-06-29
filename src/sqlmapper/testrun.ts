@@ -1,6 +1,15 @@
-import { HttpService } from "./src/services/http-Service";
+// import { HttpService } from "./src/services/http-Service";
 // import { FileService } from "./src/services/fileService";
+import * as vscode from 'vscode';
 
+console.log(vscode);
+
+// var closeFolderCommand = vscode.commands.getCommands()
+//     .then(commands => {
+
+//         var result = commands.filter(c => c.toLowerCase().includes("vscode"));
+//         var x = 5;
+//     });
 
 // var httpService = new HttpService();
 

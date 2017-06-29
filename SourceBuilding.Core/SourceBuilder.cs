@@ -7,6 +7,7 @@ using System.Reflection;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.EntityFrameworkCore;
+using Remotion.Linq.Parsing.Structure;
 
 namespace SourceBuilding.Core
 {
@@ -22,9 +23,10 @@ namespace SourceBuilding.Core
             var efCore = MetadataReference.CreateFromFile(typeof(DbContext).GetTypeInfo().Assembly.Location);
             var efRelational = MetadataReference.CreateFromFile(typeof(RelationalIndexBuilderExtensions).GetTypeInfo().Assembly.Location);
             var efSql = MetadataReference.CreateFromFile(typeof(SqlServerDbContextOptionsExtensions).GetTypeInfo().Assembly.Location);
+            var remotion = MetadataReference.CreateFromFile(typeof(INodeTypeProvider).GetTypeInfo().Assembly.Location);
             var options = new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary);
-            var compilation = CSharpCompilation.Create("testassembly", trees, new[] { mscorlib, system, systemDataCommon,
-                generics, efCore, efRelational, efSql }, options);
+            var compilation = CSharpCompilation.Create("generatedassembly", trees, new[] { mscorlib, system, systemDataCommon,
+                generics, efCore, efRelational, efSql, remotion }, options);
 
             using (var compilationStream = new MemoryStream())
             using (var debugStream = new MemoryStream())

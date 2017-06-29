@@ -3,12 +3,20 @@ using System.IO;
 using System.Threading.Tasks;
 using Scaffolding;
 using SourceBuilding.Core;
+using Microsoft.AspNetCore.Hosting;
 
 namespace SqlMapper.Host.Api
 {
     public class TestController
     {
-        public async Task<object> Get(string connectionString, string databaseName)
+        private readonly IApplicationLifetime _appLifeTime;
+
+        public TestController(IApplicationLifetime appLifeTime)
+        {
+            _appLifeTime = appLifeTime ?? throw new ArgumentNullException(nameof(appLifeTime));
+        }
+
+        public async Task<object> Get(string connectionString, string databaseName, string workspaceDir)
         {
             await Task.Yield();
             try
@@ -25,15 +33,19 @@ namespace SqlMapper.Host.Api
                 var directory = new DirectoryInfo(appFolder);
                 if (!directory.Exists) directory.Create();
                 var assemblyPath = $"{appFolder}\\generatedAssembly.dll";
+                var scriptPath = $"{workspaceDir}\\main.csx";
 
                 var scaffolding = scaffolder.ScaffoldDatabase(connectionString, @namespace, contextName);
+                var queryableExtensionsSource = File.ReadAllText($"{System.AppContext.BaseDirectory}/IQueryableExtensions.cs");
+                scaffolding.AdditionalFiles.Add(queryableExtensionsSource);
                 var assemblyBytes = sourceBuilder.Build(scaffolding.AllFiles);
                 var firstDbsetPropertyName = scriptBuilder.GetPropertyName(scaffolding.DbContextSource);
                 var script = scriptBuilder.Build(@namespace, contextName, assemblyPath, firstDbsetPropertyName);
 
                 File.WriteAllBytes(assemblyPath, assemblyBytes);
+                File.WriteAllText(scriptPath, script);
 
-                var dto = new { Script = script };
+                var dto = new { ScriptPath = scriptPath };
 
                 return dto;
             }

@@ -3,15 +3,24 @@ import { ISqlService } from "./I-sql-service";
 const mssql = require('mssql/msnodesqlv8')
 
 export class TrustedSqlService implements ISqlService {
+
+    public get connectionString(): string {
+        return `Server=${this.server}\\${this.instance};Database=${this.database};Trusted_Connection=true;`;
+    }
+
+    public get v8connectionString(): string {
+        return `Driver={SQL Server Native Client 11.0};Server={${this.server}\\${this.instance}};Database={${this.database}};Trusted_Connection={yes};`;
+    }
+
     constructor(
-        private server: string, private database: string,
+        private server: string, public database: string,
         private instance = "", private driver?: string) {
     }
 
     public async getSql(sql: string): Promise<any[]> {
         var config = {
             driver: this.driver,
-            connectionString: `Driver={SQL Server Native Client 11.0};Server={${this.server}\\${this.instance}};Database={${this.database}};Trusted_Connection={yes};`,
+            connectionString: this.v8connectionString
         };
 
         let connectionPool: ConnectionPool;

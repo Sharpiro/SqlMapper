@@ -1,7 +1,7 @@
 import * as vscode from 'vscode';
-import { TrustedSqlService } from "../services/Sql/trusted-sql-service";
+// import { TrustedSqlService } from "../services/Sql/trusted-sql-service";
 // import { MemorySqlService } from "../services/Sql/memory-sql-service";
-// import { SqlAuthService } from "../services/Sql/sql-auth-service";
+import { SqlAuthService } from "../services/Sql/sql-auth-service";
 import { FileService } from "../services/fileService";
 import { HttpService } from "../services/http-Service";
 import { ISqlService } from "../services/Sql/I-sql-service";
@@ -59,16 +59,16 @@ export class MainController {
 
     public static create(): MainController {
         const driver = 'msnodesqlv8';
-        // const server = 'localhost';
-        const server = '(localdb)';
-        const instance = "mssqllocaldb";
-        // const instance = null;
+        const server = 'localhost';
+        // const server = '(localdb)';
+        // const instance = "mssqllocaldb";
+        const instance = null;
         const database = 'Temp';
         var proxyUrl = process.env.proxy;
         var httpService = new HttpService(proxyUrl);
-        var sqlService = new TrustedSqlService(server, database, instance, driver);
+        // var sqlService = new TrustedSqlService(server, database, instance, driver);
         // var sqlService = new MemorySqlService(server, database, instance, driver);
-        // var sqlService = new SqlAuthService(server, database, "test", "test", instance);
+        var sqlService = new SqlAuthService(server, database, "test", "test", instance);
         var fileService = new FileService();
         return new MainController(sqlService, fileService, httpService);
     }

@@ -36,8 +36,8 @@ namespace SqlMapper.Host.Api
                 var scriptPath = $"{workspaceDir}\\main.csx";
 
                 var scaffolding = scaffolder.ScaffoldDatabase(connectionString, @namespace, contextName);
-                var queryableExtensionsSource = File.ReadAllText($"{System.AppContext.BaseDirectory}/IQueryableExtensions.cs");
-                scaffolding.AdditionalFiles.Add(queryableExtensionsSource);
+                //var queryableExtensionsSource = File.ReadAllText($"{System.AppContext.BaseDirectory}/IQueryableExtensions.cs");
+                //scaffolding.AdditionalFiles.Add(queryableExtensionsSource);
                 var assemblyBytes = sourceBuilder.Build(scaffolding.AllFiles);
                 var firstDbsetPropertyName = scriptBuilder.GetPropertyName(scaffolding.DbContextSource);
                 var script = scriptBuilder.Build(@namespace, contextName, assemblyPath, firstDbsetPropertyName);

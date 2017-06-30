@@ -3,7 +3,9 @@ import { ISqlService } from "./I-sql-service";
 const mssql = require('mssql')
 
 export class SqlAuthService implements ISqlService {
-    connectionString: string;
+    public get connectionString(): string {
+        return `server=${this.server};database=${this.database};user id=${this.username};password=${this.password}`;
+    }
 
     constructor(
         private server: string, public database: string, private username: string,

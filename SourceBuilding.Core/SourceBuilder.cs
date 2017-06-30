@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.Common;
+using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.EntityFrameworkCore;
-using Remotion.Linq.Parsing.Structure;
 
 namespace SourceBuilding.Core
 {
@@ -15,18 +14,12 @@ namespace SourceBuilding.Core
     {
         public byte[] Build(IEnumerable<string> sourceFiles)
         {
-            var trees = sourceFiles.Select(s => CSharpSyntaxTree.ParseText(s));
-            var mscorlib = MetadataReference.CreateFromFile(typeof(object).GetTypeInfo().Assembly.Location);
-            var system = MetadataReference.CreateFromFile(typeof(ISet<>).GetTypeInfo().Assembly.Location);
-            var systemDataCommon = MetadataReference.CreateFromFile(typeof(DbConnection).GetTypeInfo().Assembly.Location);
-            var generics = MetadataReference.CreateFromFile(typeof(HashSet<>).GetTypeInfo().Assembly.Location);
-            var efCore = MetadataReference.CreateFromFile(typeof(DbContext).GetTypeInfo().Assembly.Location);
-            var efRelational = MetadataReference.CreateFromFile(typeof(RelationalIndexBuilderExtensions).GetTypeInfo().Assembly.Location);
-            var efSql = MetadataReference.CreateFromFile(typeof(SqlServerDbContextOptionsExtensions).GetTypeInfo().Assembly.Location);
-            var remotion = MetadataReference.CreateFromFile(typeof(INodeTypeProvider).GetTypeInfo().Assembly.Location);
+            var efSqlAssembly = typeof(SqlServerDbContextOptionsExtensions).GetTypeInfo().Assembly;
+            var assemblyLocations = GetAssemblyLocations(efSqlAssembly);
+            var metadataReferences = assemblyLocations.Select(assemblyLocation => MetadataReference.CreateFromFile(assemblyLocation));
             var options = new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary);
-            var compilation = CSharpCompilation.Create("generatedassembly", trees, new[] { mscorlib, system, systemDataCommon,
-                generics, efCore, efRelational, efSql, remotion }, options);
+            var trees = sourceFiles.Select(s => CSharpSyntaxTree.ParseText(s));
+            var compilation = CSharpCompilation.Create("generatedassembly", trees, metadataReferences, options);
 
             using (var compilationStream = new MemoryStream())
             using (var debugStream = new MemoryStream())
@@ -37,6 +30,13 @@ namespace SourceBuilding.Core
                 var assemblyBytes = compilationStream.ToArray();
                 return assemblyBytes;
             }
+        }
+
+        private IEnumerable<string> GetAssemblyLocations(Assembly assembly)
+        {
+            var assemblies = ImmutableHashSet.Create(assembly.Location);
+            var subAssemblyNames = assembly.GetReferencedAssemblies();
+            return subAssemblyNames.Aggregate(assemblies, (current, subAssemblyName) => current.Add(Assembly.Load(subAssemblyName).Location));
         }
     }
 }

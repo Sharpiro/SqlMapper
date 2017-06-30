@@ -4,7 +4,7 @@ import * as assert from 'assert';
 // as well as import your extension to test it
 import * as vscode from 'vscode';
 import * as myExtension from '../src/extension';
-import { SqlService } from "../src/services/sqlService"
+import { TrustedSqlService } from "../src/services/sql/trusted-sql-service"
 
 // Defines a Mocha test suite to group tests of similar kind together
 suite("SqlService Tests", () => {
@@ -15,7 +15,7 @@ suite("SqlService Tests", () => {
         const server = '(localdb)';
         const instance = "mssqllocaldb";
         const database = 'Test';
-        var sqlService = new SqlService(server, database, instance, driver);
+        var sqlService = new TrustedSqlService(server, database, instance, driver);
         sqlService.getSql(null);
     });
 

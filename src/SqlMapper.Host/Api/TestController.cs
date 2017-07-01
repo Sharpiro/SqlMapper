@@ -23,26 +23,30 @@ namespace SqlMapper.Host.Api
             {
                 var scaffolder = new Scaffolder();
                 var sourceBuilder = new SourceBuilder();
-                var scriptBuilder = new ScriptBuilder();
+                var scriptBuilder = new ScriptGenerator();
 
-                const string @namespace = "GeneratedNamespace";
+                //const string @namespace = "GeneratedNamespace";
+                const string @namespace = "System";
                 var contextName = $"{databaseName}Context";
 
                 var userFolder = Environment.GetEnvironmentVariable("LocalAppData");
                 var appFolder = $"{userFolder}\\SqlMapper";
                 var directory = new DirectoryInfo(appFolder);
                 if (!directory.Exists) directory.Create();
-                var assemblyPath = $"{appFolder}\\generatedAssembly.dll";
+                //var libraryPath = $"{appFolder}\\generatedAssembly.dll";
+                var libraryPath = $"{appFolder}\\generatedAssembly.csx";
                 var scriptPath = $"{workspaceDir}\\main.csx";
 
                 var scaffolding = scaffolder.ScaffoldDatabase(connectionString, @namespace, contextName);
                 //var queryableExtensionsSource = File.ReadAllText($"{System.AppContext.BaseDirectory}/IQueryableExtensions.cs");
                 //scaffolding.AdditionalFiles.Add(queryableExtensionsSource);
-                var assemblyBytes = sourceBuilder.Build(scaffolding.AllFiles);
+                //var libraryData = sourceBuilder.BuildAssembly(scaffolding.AllFiles);
+                var libraryData = sourceBuilder.BuildScript(scaffolding.AllFiles);
                 var firstDbsetPropertyName = scriptBuilder.GetPropertyName(scaffolding.DbContextSource);
-                var script = scriptBuilder.Build(@namespace, contextName, assemblyPath, firstDbsetPropertyName);
+                var script = scriptBuilder.BuildMainScript(@namespace, contextName, libraryPath, firstDbsetPropertyName);
 
-                File.WriteAllBytes(assemblyPath, assemblyBytes);
+                //File.WriteAllBytes(libraryPath, libraryData);
+                File.WriteAllText(libraryPath, libraryData);
                 File.WriteAllText(scriptPath, script);
 
                 var dto = new { ScriptPath = scriptPath };

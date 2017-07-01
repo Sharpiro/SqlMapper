@@ -2,13 +2,14 @@ using Xunit;
 
 namespace SourceBuilding.Core.Tests
 {
-    public class ScriptBuilderTests
+    public class ScriptGeneratorTests
     {
         [Fact]
         public void BuildTest()
         {
-            var scriptBuilder = new ScriptBuilder();
-            var script = scriptBuilder.Build("GeneratedNamespace", "GeneratedContext", @"C:\temp\temp.dll", "Tacos");
+            var scriptGenerator = new ScriptGenerator();
+            //var script = scriptGenerator.BuildMainScript("GeneratedNamespace", "GeneratedContext", @"C:\temp\temp.dll", "Tacos");
+            var script = scriptGenerator.BuildMainScript("System", "GeneratedContext", @"C:\temp\temp.csx", "Tacos");
         }
 
         [Fact]
@@ -19,7 +20,7 @@ namespace SourceBuilding.Core.Tests
 {
     public DbSet<Log> Logs { get; set; }
 }";
-            var scriptBuilder = new ScriptBuilder();
+            var scriptBuilder = new ScriptGenerator();
 
             var propertyName = scriptBuilder.GetPropertyName(source);
 

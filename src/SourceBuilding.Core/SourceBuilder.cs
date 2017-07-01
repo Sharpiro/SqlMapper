@@ -7,12 +7,14 @@ using System.Reflection;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace SourceBuilding.Core
 {
     public class SourceBuilder
     {
-        public byte[] Build(IEnumerable<string> sourceFiles)
+        public byte[] BuildAssembly(IEnumerable<string> sourceFiles)
         {
             var efSqlAssembly = typeof(SqlServerDbContextOptionsExtensions).GetTypeInfo().Assembly;
             var assemblyLocations = GetAssemblyLocations(efSqlAssembly);
@@ -30,13 +32,51 @@ namespace SourceBuilding.Core
                 var assemblyBytes = compilationStream.ToArray();
                 return assemblyBytes;
             }
+
+            IEnumerable<string> GetAssemblyLocations(Assembly assembly)
+            {
+                var assemblies = ImmutableHashSet.Create(assembly.Location);
+                var subAssemblyNames = assembly.GetReferencedAssemblies();
+                return subAssemblyNames.Aggregate(assemblies, (current, subAssemblyName) => current.Add(Assembly.Load(subAssemblyName).Location));
+            }
         }
 
-        private IEnumerable<string> GetAssemblyLocations(Assembly assembly)
+        public string BuildScript(IEnumerable<string> sourceFiles)
         {
-            var assemblies = ImmutableHashSet.Create(assembly.Location);
-            var subAssemblyNames = assembly.GetReferencedAssemblies();
-            return subAssemblyNames.Aggregate(assemblies, (current, subAssemblyName) => current.Add(Assembly.Load(subAssemblyName).Location));
+            var members = sourceFiles.Select(s => GetNamespaceMembers(s)).SelectMany(m => m);
+            //var compilation = SyntaxFactory.CompilationUnit().WithMembers(SyntaxFactory.List(trees));
+
+            var compilation = CompilationUnit()
+                .WithUsings(
+                    List(new[] {
+                        UsingDirective(IdentifierName("Microsoft.EntityFrameworkCore.Metadata"))
+                            .WithUsingKeyword(
+                                Token(
+                                    TriviaList(
+                                        Trivia(
+                                            ReferenceDirectiveTrivia(
+                                                Literal("nuget:NetStandard.Library,1.6.1"),
+                                                true)),
+                                        Trivia(
+                                            ReferenceDirectiveTrivia(
+                                                Literal("nuget:Microsoft.EntityFrameworkCore.SqlServer,1.1.2"),
+                                                true))),
+                                    SyntaxKind.UsingKeyword,
+                                    TriviaList())),
+                        UsingDirective(IdentifierName("Microsoft.EntityFrameworkCore"))}))
+                .WithMembers(List(members))
+                .NormalizeWhitespace();
+
+            var text = compilation.NormalizeWhitespace().GetText().ToString();
+
+            return text;
+
+            IEnumerable<MemberDeclarationSyntax> GetNamespaceMembers(string sourceFile)
+            {
+                var tree = CSharpSyntaxTree.ParseText(sourceFile).GetCompilationUnitRoot();
+                var @namespace = tree.Members.OfType<NamespaceDeclarationSyntax>().Single();
+                return @namespace.Members;
+            }
         }
     }
 }

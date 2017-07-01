@@ -3,13 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26430.13
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SqlMapper", "SqlMapper\SqlMapper.csproj", "{B35FB113-2ED7-4B0C-9285-A47D08B50098}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SqlMapper.Core", "SqlMapper.Core\SqlMapper.Core.csproj", "{4B77BA8F-38CB-4BDF-AD07-679A243B180B}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Scaffolding", "Scaffolder\Scaffolding.csproj", "{C27D7C72-5051-437A-8F2E-5959972443E3}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SourceBuilding", "SourceBuilder\SourceBuilding.csproj", "{4FAF7AFE-41A2-4CB5-AEAF-4E6F39B95196}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SqlMapper.Host", "SqlMapper.Host\SqlMapper.Host.csproj", "{5B4F204A-E1A6-4DC1-AA8A-0A252B5E0F71}"
 EndProject
@@ -21,7 +15,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{C4EF82B8-1F4
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{A3CCDD8C-E2C1-4878-8DF5-DF1724B4ED85}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SourceBuilding.Core.Tests", "SourceBuilding.Core.Tests\SourceBuilding.Core.Tests.csproj", "{85F9DB23-693A-4BDE-914A-56572896AC0B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SourceBuilding.Core.Tests", "SourceBuilding.Core.Tests\SourceBuilding.Core.Tests.csproj", "{85F9DB23-693A-4BDE-914A-56572896AC0B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,22 +23,10 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{B35FB113-2ED7-4B0C-9285-A47D08B50098}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B35FB113-2ED7-4B0C-9285-A47D08B50098}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B35FB113-2ED7-4B0C-9285-A47D08B50098}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B35FB113-2ED7-4B0C-9285-A47D08B50098}.Release|Any CPU.Build.0 = Release|Any CPU
 		{4B77BA8F-38CB-4BDF-AD07-679A243B180B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{4B77BA8F-38CB-4BDF-AD07-679A243B180B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4B77BA8F-38CB-4BDF-AD07-679A243B180B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4B77BA8F-38CB-4BDF-AD07-679A243B180B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C27D7C72-5051-437A-8F2E-5959972443E3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C27D7C72-5051-437A-8F2E-5959972443E3}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C27D7C72-5051-437A-8F2E-5959972443E3}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C27D7C72-5051-437A-8F2E-5959972443E3}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4FAF7AFE-41A2-4CB5-AEAF-4E6F39B95196}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4FAF7AFE-41A2-4CB5-AEAF-4E6F39B95196}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4FAF7AFE-41A2-4CB5-AEAF-4E6F39B95196}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4FAF7AFE-41A2-4CB5-AEAF-4E6F39B95196}.Release|Any CPU.Build.0 = Release|Any CPU
 		{5B4F204A-E1A6-4DC1-AA8A-0A252B5E0F71}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{5B4F204A-E1A6-4DC1-AA8A-0A252B5E0F71}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5B4F204A-E1A6-4DC1-AA8A-0A252B5E0F71}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -66,10 +48,7 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{B35FB113-2ED7-4B0C-9285-A47D08B50098} = {C4EF82B8-1F4C-46EB-8E2B-0E113CD9121B}
 		{4B77BA8F-38CB-4BDF-AD07-679A243B180B} = {C4EF82B8-1F4C-46EB-8E2B-0E113CD9121B}
-		{C27D7C72-5051-437A-8F2E-5959972443E3} = {C4EF82B8-1F4C-46EB-8E2B-0E113CD9121B}
-		{4FAF7AFE-41A2-4CB5-AEAF-4E6F39B95196} = {C4EF82B8-1F4C-46EB-8E2B-0E113CD9121B}
 		{5B4F204A-E1A6-4DC1-AA8A-0A252B5E0F71} = {C4EF82B8-1F4C-46EB-8E2B-0E113CD9121B}
 		{6D89DB31-CE65-42F6-9AF0-78A4B4E836EE} = {C4EF82B8-1F4C-46EB-8E2B-0E113CD9121B}
 		{579CA6AD-3213-4186-B844-81490161D0E5} = {C4EF82B8-1F4C-46EB-8E2B-0E113CD9121B}

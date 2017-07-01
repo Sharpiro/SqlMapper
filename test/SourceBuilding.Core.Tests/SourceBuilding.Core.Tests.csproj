@@ -12,8 +12,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Scaffolding.Core\Scaffolding.Core.csproj" />
-    <ProjectReference Include="..\SourceBuilding.Core\SourceBuilding.Core.csproj" />
+    <ProjectReference Include="..\..\src\Scaffolding.Core\Scaffolding.Core.csproj" />
+    <ProjectReference Include="..\..\src\SourceBuilding.Core\SourceBuilding.Core.csproj" />
   </ItemGroup>
 
   <ItemGroup>

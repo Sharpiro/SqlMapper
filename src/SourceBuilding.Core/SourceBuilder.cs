@@ -14,6 +14,10 @@ namespace SourceBuilding.Core
 {
     public class SourceBuilder
     {
+        public byte[] Build(IEnumerable<string> sourceFiles)
+        {
+            throw new NotImplementedException();
+        }
         public byte[] BuildAssembly(IEnumerable<string> sourceFiles)
         {
             var efSqlAssembly = typeof(SqlServerDbContextOptionsExtensions).GetTypeInfo().Assembly;

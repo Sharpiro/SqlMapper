@@ -13,7 +13,7 @@ namespace SourceBuilding.Core
         {
             var tree = CompilationUnit()
                 .WithUsings(
-                    SingletonList(
+                    List(new[] {
                         UsingDirective(
                                 IdentifierName("Microsoft.EntityFrameworkCore"))
                             .WithUsingKeyword(
@@ -29,7 +29,8 @@ namespace SourceBuilding.Core
                                                 true)),
                                         GetLibraryTrivia(outFilePath)),
                                     SyntaxKind.UsingKeyword,
-                                    TriviaList()))))
+                                    TriviaList())),
+                    UsingDirective(IdentifierName(@namespace))}))
                 .WithMembers(BuildMembers(contextName, propertyName))
                 .NormalizeWhitespace();
 

@@ -9,15 +9,17 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
+using System.Text;
 
 namespace SourceBuilding.Core
 {
     public class SourceBuilder
     {
-        public byte[] Build(IEnumerable<string> sourceFiles)
+        public byte[] Build(IEnumerable<string> sourceFiles, LibType libType)
         {
-            throw new NotImplementedException();
+            return libType == LibType.Assembly ? BuildAssembly(sourceFiles) : BuildScript(sourceFiles);
         }
+
         public byte[] BuildAssembly(IEnumerable<string> sourceFiles)
         {
             var efSqlAssembly = typeof(SqlServerDbContextOptionsExtensions).GetTypeInfo().Assembly;
@@ -48,10 +50,12 @@ namespace SourceBuilding.Core
             }
         }
 
-        public string BuildScript(IEnumerable<string> sourceFiles)
+        public byte[] BuildScript(IEnumerable<string> sourceFiles)
         {
-            var members = sourceFiles.Select(s => GetNamespaceMembers(s)).SelectMany(m => m);
-            var compilation = CompilationUnit()
+            var compilations = sourceFiles.Select(s => CSharpSyntaxTree.ParseText(s).GetCompilationUnitRoot());
+            var members = compilations.Select(c => GetNamespaceMembers(c)).SelectMany(m => m);
+            var usings = compilations.Select(c => c.Usings).SelectMany(m => m);
+            var newCompilation = CompilationUnit()
                 .WithUsings(
                     List(new[] {
                         UsingDirective(IdentifierName("Microsoft.EntityFrameworkCore.Metadata"))
@@ -69,19 +73,21 @@ namespace SourceBuilding.Core
                                     SyntaxKind.UsingKeyword,
                                     TriviaList())),
                         UsingDirective(IdentifierName("Microsoft.EntityFrameworkCore"))}))
+                        .AddUsings(usings.ToArray())
                 .WithMembers(List(members))
                 .NormalizeWhitespace();
 
-            var text = compilation.NormalizeWhitespace().GetText().ToString();
+            var text = newCompilation.NormalizeWhitespace().GetText().ToString();
 
-            return text;
+            return Encoding.UTF8.GetBytes(text);
 
-            IEnumerable<MemberDeclarationSyntax> GetNamespaceMembers(string sourceFile)
+            IEnumerable<MemberDeclarationSyntax> GetNamespaceMembers(CompilationUnitSyntax compilation)
             {
-                var tree = CSharpSyntaxTree.ParseText(sourceFile).GetCompilationUnitRoot();
-                var @namespace = tree.Members.OfType<NamespaceDeclarationSyntax>().Single();
+                var @namespace = compilation.Members.OfType<NamespaceDeclarationSyntax>().Single();
                 return @namespace.Members;
             }
         }
     }
+
+    public enum LibType { Assembly, Script }
 }

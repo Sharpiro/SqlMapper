@@ -33,7 +33,7 @@ export class MainController {
             this.sqlService.database = databasePick;
             const connectionString = this.sqlService.connectionString;
             const workspaceDir = vscode.workspace.rootPath;
-            const localUrl = `http://localhost:2000/api/test/get?connectionString=${connectionString}&databaseName=${databasePick}&workspaceDir=${workspaceDir}`;
+            const localUrl = `http://localhost:2000/api/test/get?connectionString=${connectionString}&databaseName=${databasePick}&workspaceDir=${workspaceDir}&libType=0`;
             var data = await this.httpService.get(localUrl);
             var jObject = JSON.parse(data);
 

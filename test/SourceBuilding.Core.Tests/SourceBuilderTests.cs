@@ -1,4 +1,5 @@
-﻿using Xunit;
+﻿using System.IO;
+using Xunit;
 
 namespace SourceBuilding.Core.Tests
 {
@@ -39,7 +40,8 @@ namespace SourceBuilding.Core.Tests
     }
 }";
             var builder = new SourceBuilder();
-            var result = builder.BuildScript(new[] { source1, source2 });
+            var result = builder.BuildAssembly(new[] { source1, source2 });
+            File.WriteAllBytes(@"C:\Users\sharpiro\AppData\Local\SqlMapper\testAssembly.dll", result);
         }
     }
 }

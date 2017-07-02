@@ -17,7 +17,10 @@ namespace SourceBuilding.Core
         public byte[] BuildAssembly(IEnumerable<string> sourceFiles)
         {
             var efSqlAssembly = typeof(SqlServerDbContextOptionsExtensions).GetTypeInfo().Assembly;
-            var assemblyLocations = GetAssemblyLocations(efSqlAssembly);
+            var systemObject = typeof(object).GetTypeInfo().Assembly.Location;
+            var coreDir = Path.GetDirectoryName(typeof(object).GetTypeInfo().Assembly.Location);
+            var mscorlib = Path.Combine(coreDir, "mscorlib.dll");
+            var assemblyLocations = GetAssemblyLocations(efSqlAssembly).Add(systemObject).Add(mscorlib);
             var metadataReferences = assemblyLocations.Select(assemblyLocation => MetadataReference.CreateFromFile(assemblyLocation));
             var options = new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary);
             var trees = sourceFiles.Select(s => CSharpSyntaxTree.ParseText(s));
@@ -33,7 +36,7 @@ namespace SourceBuilding.Core
                 return assemblyBytes;
             }
 
-            IEnumerable<string> GetAssemblyLocations(Assembly assembly)
+            ImmutableHashSet<string> GetAssemblyLocations(Assembly assembly)
             {
                 var assemblies = ImmutableHashSet.Create(assembly.Location);
                 var subAssemblyNames = assembly.GetReferencedAssemblies();
@@ -44,8 +47,6 @@ namespace SourceBuilding.Core
         public string BuildScript(IEnumerable<string> sourceFiles)
         {
             var members = sourceFiles.Select(s => GetNamespaceMembers(s)).SelectMany(m => m);
-            //var compilation = SyntaxFactory.CompilationUnit().WithMembers(SyntaxFactory.List(trees));
-
             var compilation = CompilationUnit()
                 .WithUsings(
                     List(new[] {

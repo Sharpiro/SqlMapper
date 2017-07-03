@@ -21,9 +21,6 @@ namespace SqlMapper.Host.Api
             await Task.Yield();
             try
             {
-                //var libType = LibType.Assembly;
-                //var libType = LibType.Script;
-
                 var scaffolder = new Scaffolder();
                 var sourceBuilder = new SourceBuilder();
                 var scriptBuilder = new ScriptGenerator();
@@ -38,7 +35,7 @@ namespace SqlMapper.Host.Api
                 var libraryPath = libType == LibType.Assembly ? $"{appFolder}\\generatedAssembly.dll" : $"{appFolder}\\generatedAssembly.csx";
                 var scriptPath = $"{workspaceDir}\\main.csx";
 
-                var queryableExtensionsSource = File.ReadAllText($"{System.AppContext.BaseDirectory}/IQueryableExtensions.cs");
+                var queryableExtensionsSource = File.ReadAllText($"{AppContext.BaseDirectory}/IQueryableExtensions.cs");
                 var scaffolding = scaffolder.ScaffoldDatabase(connectionString, @namespace, contextName);
                 scaffolding.AdditionalFiles.Add(queryableExtensionsSource);
 

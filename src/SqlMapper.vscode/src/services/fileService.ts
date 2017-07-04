@@ -29,4 +29,14 @@ export class FileService {
         });
         return promise;
     }
+
+    public open(filePath: string): Promise<string> {
+        var promise = new Promise<string>((resolve, reject) => {
+            fs.readFile(filePath, (err, data) => {
+                if (err) reject(err);
+                resolve(data.toString());
+            })
+        });
+        return promise;
+    }
 }

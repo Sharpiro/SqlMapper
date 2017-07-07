@@ -18,8 +18,6 @@ namespace GeneratedNamespace
         public virtual ICollection<Log> Log { get; set; }
     }
 
-
-
     public partial class Log
     {
         public int Id { get; set; }

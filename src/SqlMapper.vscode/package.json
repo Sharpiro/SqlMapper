@@ -12,7 +12,8 @@
   ],
   "activationEvents": [
     "onCommand:extension.order66",
-    "onCommand:extension.getInfo"
+    "onCommand:extension.getInfo",
+    "onCommand:extension.buildProfile"
   ],
   "main": "./out/src/extension",
   "contributes": {
@@ -24,6 +25,10 @@
       {
         "command": "extension.getInfo",
         "title": "GetInfoSqlMapper"
+      },
+      {
+        "command": "extension.buildProfile",
+        "title": "Build Profile"
       }
     ]
   },

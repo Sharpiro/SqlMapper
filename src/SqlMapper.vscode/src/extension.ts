@@ -2,6 +2,8 @@
 import * as vscode from 'vscode';
 import { MainController } from "./controllers/main-controller";
 import { HostDownloader } from "./services/host-downloader";
+import { HttpService } from "./services/http-Service";
+import { FileService } from "./services/fileService";
 
 let controller: MainController;
 
@@ -13,7 +15,9 @@ export async function activate(context: vscode.ExtensionContext) {
     // This line of code will only be executed once when your extension is activated
     console.log('"sqlmapper" is activating...');
     controller = await MainController.create();
-    var hostDownloader = new HostDownloader();
+    var proxyUrl = process.env.proxy;
+    var httpService = new HttpService(proxyUrl);
+    var hostDownloader = new HostDownloader(httpService, new FileService());
 
     const downloadTask = hostDownloader.download();
     // The command has been defined in the package.json file

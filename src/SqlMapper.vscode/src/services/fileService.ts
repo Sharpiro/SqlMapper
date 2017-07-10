@@ -30,6 +30,16 @@ export class FileService {
         return promise;
     }
 
+       public createBuffer(filePath: string, fileData: any): Promise<void> {
+        var promise = new Promise<void>((resolve, reject) => {
+            fs.writeFile(filePath, fileData, err => {
+                if (err) reject(err);
+                else resolve();
+            });
+        });
+        return promise;
+    }
+
     public open(filePath: string): Promise<string> {
         var promise = new Promise<string>((resolve, reject) => {
             fs.readFile(filePath, (err, data) => {

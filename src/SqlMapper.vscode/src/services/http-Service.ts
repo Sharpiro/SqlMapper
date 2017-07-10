@@ -45,7 +45,7 @@ export class HttpService {
     }
 
     private initiateCall(nodeHttp: INodeHttp, requestOptions: http.RequestOptions) {
-        let localPromise = new Promise<string>((resolve, reject) => {
+        let localPromise = new Promise<string | Buffer>((resolve, reject) => {
             let isTimedOut = false;
             setTimeout(() => {
                 isTimedOut = true;
@@ -55,15 +55,38 @@ export class HttpService {
             nodeHttp.get(requestOptions, response => handleData(response, resolve, reject, isTimedOut));
         });
 
-        const handleData = (response: http.IncomingMessage, resolve: (value: string) => void, reject: () => void, isTimedOut: boolean) => {
+        const handleData = (response: http.IncomingMessage, resolve: (value: string | Buffer) => void, reject: () => void, isTimedOut: boolean) => {
             if (isTimedOut) return;
             if (response.statusCode !== 200 && response.statusCode !== 201) reject();
-            response.setEncoding("utf8");
+            var allBuffer: Buffer = new Buffer(0);
+            let allData = "";
+            // response.setEncoding("utf8");
             response.on("data", chunk => {
-                resolve(<string>chunk);
+                if (typeof chunk === "string")
+                    allData += chunk;
+                else
+                    allBuffer = Buffer.concat([allBuffer, chunk]);
             });
+
+            response.on("end", () => {
+                allData !== "" ? resolve(allData) : resolve(allBuffer);
+            })
         }
 
         return localPromise;
+
     }
+
+    // private GetData(buffer: Buffer) {
+    //     var temp = new Uint8Array(buffer)..buffer;
+
+    //     temp.slice()
+
+    //     var arrayBuffer = new ArrayBuffer(buffer.length);
+    //     var byteArray = new Uint8Array(arrayBuffer);
+
+    //     for (var i = 0; i < buffer.length; i++) {
+    //         byteArray[i] = buffer[i];
+    //     }
+    // }
 }

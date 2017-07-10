@@ -1,7 +1,10 @@
-﻿using Microsoft.AspNetCore.Hosting;
+﻿using System.Linq;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Hosting.Server.Features;
 using Microsoft.Extensions.CommandLineUtils;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using static System.Console;
 
 namespace SqlMapper.Host
 {
@@ -9,6 +12,7 @@ namespace SqlMapper.Host
     {
         internal static void Main(string[] args)
         {
+            WriteLine("Initializing application...");
             var cmdApp = new CommandLineApplication(throwOnUnexpectedArg: false);
             cmdApp.HelpOption("-? | -h | --help");
 
@@ -20,6 +24,7 @@ namespace SqlMapper.Host
                 .UseEnvironment("SqlMapper")
                 .ConfigureServices(serviceCollection =>
                 {
+
                 })
                 .UseStartup(typeof(Startup))
                 .UseKestrel();
@@ -28,7 +33,9 @@ namespace SqlMapper.Host
             {
                 using (var webApp = builder.Build())
                 {
+                    var address = webApp.ServerFeatures.Get<IServerAddressesFeature>().Addresses.FirstOrDefault();
                     webApp.Start();
+                    WriteLine($"Server started on port {address}");
                     var appLifeTime = webApp.Services.GetRequiredService<IApplicationLifetime>();
                     appLifeTime.ApplicationStopping.WaitHandle.WaitOne();
                 }

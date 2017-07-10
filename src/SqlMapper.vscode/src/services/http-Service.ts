@@ -11,8 +11,6 @@ export class HttpService {
     private _proxyUrl: string;
     private httpTimeout = 10;
 
-    // private temp: INodeHttp = http;
-
     public get proxyUrl(): string {
         return this._proxyUrl;
     }
@@ -41,28 +39,6 @@ export class HttpService {
             rejectUnauthorized: false
         };
 
-        // const initiateCall = (nodeHttp: INodeHttp, requestOptions: http.RequestOptions) => {
-        //     let localPromise = new Promise<string>((resolve, reject) => {
-        //         let isTimedOut = false;
-        //         setTimeout(() => {
-        //             isTimedOut = true;
-        //             reject(new Error("Connection timed out"));
-        //             return;
-        //         }, this.httpTimeout);
-        //         nodeHttp.get(requestOptions, response => handleData(response, resolve, reject, isTimedOut));
-        //     });
-        //     return localPromise;
-        // }
-
-
-        // const handleData = (response: http.IncomingMessage, resolve: (value: string) => void, reject: () => void, isTimedOut: boolean) => {
-        //     if (isTimedOut) return;
-        //     if (response.statusCode !== 200 && response.statusCode !== 201) reject();
-        //     response.setEncoding("utf8");
-        //     response.on("data", chunk => {
-        //         resolve(<string>chunk);
-        //     });
-        // }
         const nodeHttp = isHttps ? https : http;
         let promise = this.initiateCall(nodeHttp, requestOptions);
         return promise;

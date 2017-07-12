@@ -20,17 +20,7 @@ export class FileService {
         return promise;
     }
 
-    public create(filePath: string, fileData: string): Promise<void> {
-        var promise = new Promise<void>((resolve, reject) => {
-            fs.writeFile(filePath, fileData, err => {
-                if (err) reject(err);
-                else resolve();
-            });
-        });
-        return promise;
-    }
-
-       public createBuffer(filePath: string, fileData: any): Promise<void> {
+    public create(filePath: string, fileData: string | Buffer): Promise<void> {
         var promise = new Promise<void>((resolve, reject) => {
             fs.writeFile(filePath, fileData, err => {
                 if (err) reject(err);

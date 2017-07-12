@@ -26,7 +26,7 @@ export class HttpService {
         this.proxyUrl = proxyUrl;
     }
 
-    public get(url: string): Promise<string> {
+    public get(url: string): Promise<string | Buffer> {
         const parsedUrl: Url = parseUrl(url);
         const isHttps = parsedUrl.protocol === "https:";
         const isLocal = parsedUrl.hostname.includes("localhost");
@@ -74,19 +74,5 @@ export class HttpService {
         }
 
         return localPromise;
-
     }
-
-    // private GetData(buffer: Buffer) {
-    //     var temp = new Uint8Array(buffer)..buffer;
-
-    //     temp.slice()
-
-    //     var arrayBuffer = new ArrayBuffer(buffer.length);
-    //     var byteArray = new Uint8Array(arrayBuffer);
-
-    //     for (var i = 0; i < buffer.length; i++) {
-    //         byteArray[i] = buffer[i];
-    //     }
-    // }
 }

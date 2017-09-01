@@ -47,7 +47,7 @@ export class MainController {
             if (!this.profile) {
                 if (!await this.fileService.exists(this.profilePath))
                     throw new Error("Must first create sql profile");
-                    
+
                 const sqlOptionsJson = await this.fileService.open(this.profilePath);
                 this.profile = JSON.parse(sqlOptionsJson);
             }
@@ -56,7 +56,7 @@ export class MainController {
             await vscode.commands.executeCommand("workbench.action.closeAllEditors");
 
 
-            const sqlService = this.sqlServiceFactory.createSqlService(this.profile);
+            const sqlService = await this.sqlServiceFactory.createSqlService(this.profile);
 
             // get database list
             const getDatabasesQuery = "SELECT name from sys.databases WHERE owner_sid != 1";
@@ -70,7 +70,7 @@ export class MainController {
             const connectionString = sqlService.connectionString;
             const workspaceDir = vscode.workspace.rootPath;
             const localUrl = `http://localhost:2000/api/test/get?connectionString=${connectionString}&databaseName=${databasePick}&workspaceDir=${workspaceDir}&libType=0`;
-            var data = await this.httpService.get(localUrl);
+            var data = <string>(await this.httpService.get(localUrl));
             var jObject = JSON.parse(data);
 
             // create script file

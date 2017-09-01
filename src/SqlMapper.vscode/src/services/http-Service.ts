@@ -11,8 +11,6 @@ export class HttpService {
     private _proxyUrl: string;
     private httpTimeout = 10;
 
-    // private temp: INodeHttp = http;
-
     public get proxyUrl(): string {
         return this._proxyUrl;
     }
@@ -28,7 +26,7 @@ export class HttpService {
         this.proxyUrl = proxyUrl;
     }
 
-    public get(url: string): Promise<string> {
+    public get(url: string): Promise<string | Buffer> {
         const parsedUrl: Url = parseUrl(url);
         const isHttps = parsedUrl.protocol === "https:";
         const isLocal = parsedUrl.hostname.includes("localhost");
@@ -41,35 +39,13 @@ export class HttpService {
             rejectUnauthorized: false
         };
 
-        // const initiateCall = (nodeHttp: INodeHttp, requestOptions: http.RequestOptions) => {
-        //     let localPromise = new Promise<string>((resolve, reject) => {
-        //         let isTimedOut = false;
-        //         setTimeout(() => {
-        //             isTimedOut = true;
-        //             reject(new Error("Connection timed out"));
-        //             return;
-        //         }, this.httpTimeout);
-        //         nodeHttp.get(requestOptions, response => handleData(response, resolve, reject, isTimedOut));
-        //     });
-        //     return localPromise;
-        // }
-
-
-        // const handleData = (response: http.IncomingMessage, resolve: (value: string) => void, reject: () => void, isTimedOut: boolean) => {
-        //     if (isTimedOut) return;
-        //     if (response.statusCode !== 200 && response.statusCode !== 201) reject();
-        //     response.setEncoding("utf8");
-        //     response.on("data", chunk => {
-        //         resolve(<string>chunk);
-        //     });
-        // }
         const nodeHttp = isHttps ? https : http;
         let promise = this.initiateCall(nodeHttp, requestOptions);
         return promise;
     }
 
     private initiateCall(nodeHttp: INodeHttp, requestOptions: http.RequestOptions) {
-        let localPromise = new Promise<string>((resolve, reject) => {
+        let localPromise = new Promise<string | Buffer>((resolve, reject) => {
             let isTimedOut = false;
             setTimeout(() => {
                 isTimedOut = true;
@@ -79,13 +55,22 @@ export class HttpService {
             nodeHttp.get(requestOptions, response => handleData(response, resolve, reject, isTimedOut));
         });
 
-        const handleData = (response: http.IncomingMessage, resolve: (value: string) => void, reject: () => void, isTimedOut: boolean) => {
+        const handleData = (response: http.IncomingMessage, resolve: (value: string | Buffer) => void, reject: () => void, isTimedOut: boolean) => {
             if (isTimedOut) return;
             if (response.statusCode !== 200 && response.statusCode !== 201) reject();
-            response.setEncoding("utf8");
+            var allBuffer: Buffer = new Buffer(0);
+            let allData = "";
+            // response.setEncoding("utf8");
             response.on("data", chunk => {
-                resolve(<string>chunk);
+                if (typeof chunk === "string")
+                    allData += chunk;
+                else
+                    allBuffer = Buffer.concat([allBuffer, chunk]);
             });
+
+            response.on("end", () => {
+                allData !== "" ? resolve(allData) : resolve(allBuffer);
+            })
         }
 
         return localPromise;
